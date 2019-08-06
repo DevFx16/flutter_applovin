@@ -9,6 +9,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.google.gms:google-services:4.3.0'
     }
 }
 
@@ -31,4 +32,10 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+}
+
+dependencies {
+    implementation 'com.applovin:applovin-sdk:9.8.0'
+    implementation 'com.google.android.gms:play-services-ads:18.1.1'
+    implementation 'com.google.ads.mediation:applovin:9.7.2.0'
 }
