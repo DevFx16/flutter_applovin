@@ -1,5 +1,6 @@
 package developgadget.com.applovin;
 
+import com.applovin.adview.AppLovinIncentivizedInterstitial;
 import com.applovin.adview.AppLovinInterstitialAd;
 import com.applovin.adview.AppLovinInterstitialAdDialog;
 import com.applovin.nativeAds.AppLovinNativeAd;
@@ -14,6 +15,7 @@ import com.applovin.sdk.AppLovinSdk;
 
 import java.util.List;
 
+import io.flutter.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -30,6 +32,7 @@ public class ApplovinPlugin implements MethodCallHandler {
     private final Events listeners;
     static AppLovinAd Ad;
     static List<AppLovinNativeAd> NativeAds;
+    static AppLovinIncentivizedInterstitial RewardedAd;
 
     /**
      * Plugin registration.
@@ -70,6 +73,14 @@ public class ApplovinPlugin implements MethodCallHandler {
             case "ShowInterstitial":
                 callShowInterstitial(call, result);
                 break;
+            case "LoadRewarded":
+                this.RewardedAd = AppLovinIncentivizedInterstitial.create(this.registrar.activity());
+                this.RewardedAd.preload(this.listeners);
+                result.success(Boolean.TRUE);
+                break;
+            case "ShowRewarded":
+                callShowRewarded(call, result);
+                break;
             default:
                 result.notImplemented();
         }
@@ -84,6 +95,15 @@ public class ApplovinPlugin implements MethodCallHandler {
             interstitialAd.setAdClickListener( this.listeners );
             interstitialAd.setAdVideoPlaybackListener(this.listeners);
             interstitialAd.showAndRender(Ad);
+        }
+        result.success(Boolean.TRUE);
+    }
+
+    private void callShowRewarded(MethodCall call, Result result){
+        if(this.RewardedAd.isAdReadyToDisplay()){
+            this.RewardedAd.show(this.registrar.activity(), this.listeners, this.listeners);
+        }else{
+            Log.e("RewardedAd", "Not Ready");
         }
         result.success(Boolean.TRUE);
     }
