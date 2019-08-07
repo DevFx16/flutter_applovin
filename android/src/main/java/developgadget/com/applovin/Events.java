@@ -34,7 +34,7 @@ public class Events implements AppLovinAdLoadListener, AppLovinAdDisplayListener
     }
 
     private void CallBack(String Message, String Method){
-        this.channel.invokeMethod("CallBack", Method);
+        this.channel.invokeMethod(Method, null);
         Log.d("AppLovin", Message);
     }
 

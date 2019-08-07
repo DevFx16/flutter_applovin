@@ -51,32 +51,45 @@ class Applovin {
     'onNativeAdsFailedToLoad': MobileAdEvent.onNativeAdsFailedToLoad,
     'onNativeAdImagesPrecached': MobileAdEvent.onNativeAdImagesPrecached,
     'onNativeAdVideoPreceached': MobileAdEvent.onNativeAdVideoPreceached,
-    'onNativeAdImagePrecachingFailed': MobileAdEvent.onNativeAdImagePrecachingFailed,
-    'onNativeAdVideoPrecachingFailed': MobileAdEvent.onNativeAdVideoPrecachingFailed
+    'onNativeAdImagePrecachingFailed':
+        MobileAdEvent.onNativeAdImagePrecachingFailed,
+    'onNativeAdVideoPrecachingFailed':
+        MobileAdEvent.onNativeAdVideoPrecachingFailed
   };
+  static AdManager _ads;
 
-  static Future<dynamic>  init() async {
+  static Future<dynamic> init() async {
     _channel.setMethodCallHandler(_handleMethod);
     return await _invokeBooleanMethod('Init');
   }
 
-  static Future _handleMethod(MethodCall call){
-    assert(call.arguments is String);
+  static Future _handleMethod(MethodCall call) {
     final MobileAdEvent mobileAdEvent = _methodEvent[call.method];
+    if (_ads != null) _ads.listener(mobileAdEvent);
     return Future.value(null);
   }
-
 }
 
 typedef void MobileAdListener(MobileAdEvent event);
 
 class AdManager {
-  AdManager({@required this.listener});
+  AdManager({@required this.listener}) {
+    Applovin._ads = this;
+  }
 
   MobileAdListener listener;
 
-  AdManager get instance => this;
+  Future<bool> loadInterstitial() async =>
+      await _invokeBooleanMethod('LoadInterstitial');
 
+  Future<bool> showInterstitial() async =>
+      await _invokeBooleanMethod('ShowInterstitial');
+
+  Future<bool> loadRewarded() async =>
+      await _invokeBooleanMethod('LoadRewarded');
+
+  Future<bool> showRewarded() async =>
+      await _invokeBooleanMethod('ShowRewarded');
 }
 
 Future<bool> _invokeBooleanMethod(String method, [dynamic arguments]) async {

@@ -21,11 +21,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/applovin.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="77" column="32" selection-start-line="77" selection-start-column="32" selection-end-line="77" selection-end-column="32" />
+            <state relative-caret-position="270">
+              <caret line="66" selection-start-line="66" selection-end-line="66" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
-                <element signature="e#760#1339#0" />
+                <element signature="e#2746#2870#0" />
               </folding>
             </state>
           </provider>
@@ -53,6 +53,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -75,7 +76,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
       <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
@@ -112,8 +112,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1364" y="0" width="1364" height="770" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24961832" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.24961832" />
       <window_info id="Captures" order="1" side_tool="true" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
@@ -156,11 +157,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/applovin.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="77" column="32" selection-start-line="77" selection-start-column="32" selection-end-line="77" selection-end-column="32" />
+        <state relative-caret-position="270">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
-            <element signature="e#760#1339#0" />
+            <element signature="e#2746#2870#0" />
           </folding>
         </state>
       </provider>
