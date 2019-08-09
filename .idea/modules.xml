@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/applovin.iml" filepath="$PROJECT_DIR$/applovin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/applovin_android.iml" filepath="$PROJECT_DIR$/android/applovin_android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/example/android/applovin_example_android.iml" filepath="$PROJECT_DIR$/example/android/applovin_example_android.iml" />
     </modules>
   </component>
 </project>
