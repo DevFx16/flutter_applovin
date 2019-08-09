@@ -14,14 +14,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   static AdManager _adManager = AdManager(listener: (MobileAdEvent event){
-    if(event == MobileAdEvent.adReceived) _adManager.showRewarded();
+    if(event == MobileAdEvent.adReceived) _adManager.showInterstitial();
   });
 
   @override
   void initState() {
     super.initState();
     Applovin.init();
-    _adManager.loadRewarded();
+    _adManager.loadInterstitial();
   }
 
   @override

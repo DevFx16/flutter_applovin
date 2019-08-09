@@ -50,8 +50,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/android/src/main/java/developgadget/com/applovin/ApplovinPlugin.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="138">
-              <caret line="69" column="62" selection-start-line="69" selection-start-column="50" selection-end-line="69" selection-end-column="62" />
+            <state relative-caret-position="-233">
+              <caret line="75" column="32" selection-start-line="75" selection-start-column="32" selection-end-line="75" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -95,20 +95,20 @@
             <path>
               <item name="flutter_applovin" type="b2602c69:ProjectViewProjectNode" />
               <item name="flutter_applovin" type="462c0819:PsiDirectoryNode" />
+              <item name="example" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="flutter_applovin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="flutter_applovin" type="462c0819:PsiDirectoryNode" />
+              <item name="example" type="462c0819:PsiDirectoryNode" />
               <item name="android" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="flutter_applovin" type="b2602c69:ProjectViewProjectNode" />
               <item name="flutter_applovin" type="462c0819:PsiDirectoryNode" />
+              <item name="example" type="462c0819:PsiDirectoryNode" />
               <item name="android" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="flutter_applovin" type="b2602c69:ProjectViewProjectNode" />
-              <item name="flutter_applovin" type="462c0819:PsiDirectoryNode" />
-              <item name="android" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="applovin" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="flutter_applovin" type="b2602c69:ProjectViewProjectNode" />
@@ -167,7 +167,7 @@
       <window_info id="Capture Tool" order="7" />
       <window_info id="Favorites" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Dart Analysis" order="0" weight="0.331761" />
-      <window_info anchor="bottom" id="Run" order="1" visible="true" weight="0.32917318" />
+      <window_info anchor="bottom" id="Run" order="1" weight="0.32917318" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Android Profiler" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="4" />
@@ -243,10 +243,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/example/android/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/android/src/main/java/developgadget/com/applovin/ApplovinPlugin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="69" column="62" selection-start-line="69" selection-start-column="50" selection-end-line="69" selection-end-column="62" />
+        <state relative-caret-position="-233">
+          <caret line="75" column="32" selection-start-line="75" selection-start-column="32" selection-end-line="75" selection-end-column="32" />
         </state>
       </provider>
     </entry>

@@ -10,6 +10,7 @@ import com.applovin.sdk.AppLovinAdDisplayListener;
 import com.applovin.sdk.AppLovinAdLoadListener;
 import com.applovin.sdk.AppLovinAdRewardListener;
 import com.applovin.sdk.AppLovinAdSize;
+import com.applovin.sdk.AppLovinAdType;
 import com.applovin.sdk.AppLovinPrivacySettings;
 import com.applovin.sdk.AppLovinSdk;
 
@@ -74,8 +75,8 @@ public class ApplovinPlugin implements MethodCallHandler {
                 callShowInterstitial(call, result);
                 break;
             case "LoadRewarded":
-                this.RewardedAd = AppLovinIncentivizedInterstitial.create(this.registrar.activity());
-                this.RewardedAd.preload(this.listeners);
+                RewardedAd = AppLovinIncentivizedInterstitial.create(this.registrar.activity());
+                RewardedAd.preload(this.listeners);
                 result.success(Boolean.TRUE);
                 break;
             case "ShowRewarded":
@@ -84,25 +85,24 @@ public class ApplovinPlugin implements MethodCallHandler {
             default:
                 result.notImplemented();
         }
-        return;
     }
 
     private void callShowInterstitial(MethodCall call, Result result) {
-        if(Ad != null){
+        if (Ad != null) {
             AppLovinInterstitialAdDialog interstitialAd = AppLovinInterstitialAd.create(
                     AppLovinSdk.getInstance(this.registrar.context()), this.registrar.context());
             interstitialAd.setAdDisplayListener(this.listeners);
-            interstitialAd.setAdClickListener( this.listeners );
+            interstitialAd.setAdClickListener(this.listeners);
             interstitialAd.setAdVideoPlaybackListener(this.listeners);
             interstitialAd.showAndRender(Ad);
         }
         result.success(Boolean.TRUE);
     }
 
-    private void callShowRewarded(MethodCall call, Result result){
-        if(this.RewardedAd.isAdReadyToDisplay()){
-            this.RewardedAd.show(this.registrar.activity(), this.listeners, this.listeners);
-        }else{
+    private void callShowRewarded(MethodCall call, Result result) {
+        if (Ad != null && Ad.getType() == AppLovinAdType.INCENTIVIZED && RewardedAd.isAdReadyToDisplay()) {
+            RewardedAd.show(this.registrar.activity(), this.listeners, this.listeners);
+        } else {
             Log.e("RewardedAd", "Not Ready");
         }
         result.success(Boolean.TRUE);
