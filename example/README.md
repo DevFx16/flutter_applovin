@@ -1,16 +1,40 @@
-# applovin_example
+```dart
+import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:applovin/applovin.dart';
 
-Demonstrates how to use the applovin plugin.
+void main() => runApp(MyApp());
 
-## Getting Started
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
-This project is a starting point for a Flutter application.
+class _MyAppState extends State<MyApp> {
+  String _platformVersion = 'Unknown';
+  static AdManager _adManager = AdManager(listener: (MobileAdEvent event){
+    if(event == MobileAdEvent.adReceived) _adManager.showInterstitial();
+  });
 
-A few resources to get you started if this is your first Flutter project:
+  @override
+  void initState() {
+    super.initState();
+    Applovin.init();
+    _adManager.loadInterstitial();
+  }
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Plugin example app'),
+        ),
+        body: Center(
+          child: Text('Running on: $_platformVersion\n'),
+        ),
+      ),
+    );
+  }
+}
+```
