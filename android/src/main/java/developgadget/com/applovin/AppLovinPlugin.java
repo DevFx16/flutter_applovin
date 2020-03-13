@@ -19,6 +19,7 @@ public class AppLovinPlugin implements MethodCallHandler {
         channel.setMethodCallHandler(new AppLovinPlugin(registrar));
         channelInter.setMethodCallHandler(new Interstitial(registrar, channelInter));
         channelInter.setMethodCallHandler(new RewardedVideo(channelReward, registrar));
+        registrar.platformViewRegistry().registerViewFactory("/BannerAd", new BannerFactory(registrar.messenger(), registrar.activity()));
     }
 
     private AppLovinPlugin(Registrar registrar) {

@@ -15,6 +15,7 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry;
 
+@SuppressWarnings("NullableProblems")
 public class RewardedVideo implements MethodChannel.MethodCallHandler, AppLovinAdRewardListener,
         AppLovinAdLoadListener, AppLovinAdVideoPlaybackListener, AppLovinAdDisplayListener, AppLovinAdClickListener {
 
