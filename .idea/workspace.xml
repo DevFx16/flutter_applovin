@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="03c31dc6-35ee-4413-a9ab-a60b7491840f" name="Default Changelist" comment="" />
+    <list default="true" id="03c31dc6-35ee-4413-a9ab-a60b7491840f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/lib/applovin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/applovin.dart" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1ZRklAICv5ztNEd5F9ndzNyVlfk" />
   <component name="PropertiesComponent">
@@ -38,5 +43,16 @@
       <updated>1584809442682</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

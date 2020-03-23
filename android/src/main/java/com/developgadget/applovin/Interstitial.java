@@ -21,11 +21,7 @@ public class Interstitial implements AppLovinAdLoadListener,
 
     Interstitial(Context context) {
         this.context = context;
-        this.interstitialAd = AppLovinInterstitialAd.create(AppLovinSdk.getInstance(this.context), this.context);
-        this.interstitialAd.setAdLoadListener(this);
-        this.interstitialAd.setAdDisplayListener(this);
-        this.interstitialAd.setAdClickListener(this);
-        this.interstitialAd.setAdVideoPlaybackListener(this);
+        this.interstitialAd = AppLovinInterstitialAd.create(AppLovinSdk.getInstance(context), context);
     }
 
 
@@ -38,43 +34,44 @@ public class Interstitial implements AppLovinAdLoadListener,
         if (this.currentAd != null)
             this.interstitialAd.showAndRender(this.currentAd);
         else
-            Log.d("AppLovin", "Ad not load instance null");
+            Log.i("AppLovin", "Ad not load instance null");
     }
 
     @Override
     public void adReceived(AppLovinAd ad) {
         this.currentAd = ad;
-        ApplovinPlugin.Callback("AdReceived");
+        ApplovinPlugin.getInstance().Callback("AdReceived");
     }
 
     @Override
     public void failedToReceiveAd(int errorCode) {
-        ApplovinPlugin.Callback("FailedToReceiveAd error sdk code " + errorCode);
+        Log.i("AppLovin", "FailedToReceiveAd error sdk code "+ errorCode);
+        ApplovinPlugin.getInstance().Callback("FailedToReceiveAd");
     }
 
     @Override
     public void adClicked(AppLovinAd ad) {
-        ApplovinPlugin.Callback("AdClicked");
+        ApplovinPlugin.getInstance().Callback("AdClicked");
     }
 
     @Override
     public void adDisplayed(AppLovinAd ad) {
-        ApplovinPlugin.Callback("AdDisplayed");
+        ApplovinPlugin.getInstance().Callback("AdDisplayed");
     }
 
     @Override
     public void adHidden(AppLovinAd ad) {
         this.currentAd = null;
-        ApplovinPlugin.Callback("AdHidden");
+        ApplovinPlugin.getInstance().Callback("AdHidden");
     }
 
     @Override
     public void videoPlaybackBegan(AppLovinAd ad) {
-        ApplovinPlugin.Callback("VideoPlaybackBegan");
+        ApplovinPlugin.getInstance().Callback("VideoPlaybackBegan");
     }
 
     @Override
     public void videoPlaybackEnded(AppLovinAd ad, double percentViewed, boolean fullyWatched) {
-        ApplovinPlugin.Callback("VideoPlaybackEnded");
+        ApplovinPlugin.getInstance().Callback("VideoPlaybackEnded");
     }
 }

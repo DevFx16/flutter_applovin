@@ -9,13 +9,8 @@ import com.applovin.sdk.AppLovinAdDisplayListener;
 import com.applovin.sdk.AppLovinAdLoadListener;
 import com.applovin.sdk.AppLovinAdRewardListener;
 import com.applovin.sdk.AppLovinAdVideoPlaybackListener;
-
 import java.util.Map;
-
 import io.flutter.Log;
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.PluginRegistry;
 
 @SuppressWarnings("NullableProblems")
 public class RewardedVideo implements AppLovinAdRewardListener,
@@ -41,66 +36,68 @@ public class RewardedVideo implements AppLovinAdRewardListener,
         if (this.Rewarded != null && this.Rewarded.isAdReadyToDisplay())
             this.Rewarded.show(this.context, this, this, this);
         else
-            Log.d("AppLovin", "Ad not load");
+            Log.i("AppLovin", "Ad not load");
     }
 
     @Override
     public void userRewardVerified(AppLovinAd ad, Map<String, String> response) {
-        ApplovinPlugin.Callback("UserRewardVerified");
+        ApplovinPlugin.getInstance().Callback("UserRewardVerified");
     }
 
     @Override
     public void userOverQuota(AppLovinAd ad, Map<String, String> response) {
-        ApplovinPlugin.Callback("UserOverQuota");
+        ApplovinPlugin.getInstance().Callback("UserOverQuota");
     }
 
     @Override
     public void userRewardRejected(AppLovinAd ad, Map<String, String> response) {
-        ApplovinPlugin.Callback("UserRewardRejected");
+        ApplovinPlugin.getInstance().Callback("UserRewardRejected");
     }
 
     @Override
     public void validationRequestFailed(AppLovinAd ad, int errorCode) {
-        ApplovinPlugin.Callback("ValidationRequestFailed error sdk code " + errorCode);
+        Log.i("AppLovin", "ValidationRequestFailed error sdk code " + errorCode);
+        ApplovinPlugin.getInstance().Callback("ValidationRequestFailed");
     }
 
     @Override
     public void userDeclinedToViewAd(AppLovinAd ad) {
-        ApplovinPlugin.Callback("UserDeclinedToViewAd");
+        ApplovinPlugin.getInstance().Callback("UserDeclinedToViewAd");
     }
 
     @Override
     public void adReceived(AppLovinAd ad) {
-        ApplovinPlugin.Callback("AdReceived");
+        ApplovinPlugin.getInstance().Callback("AdReceived");
     }
 
     @Override
     public void failedToReceiveAd(int errorCode) {
-        ApplovinPlugin.Callback("FailedToReceiveAd error sdk code " + errorCode);
+        Log.i("AppLovin","FailedToReceiveAd error sdk code " + errorCode);
+        ApplovinPlugin.getInstance().Callback("FailedToReceiveAd");
     }
 
     @Override
     public void adClicked(AppLovinAd ad) {
-        ApplovinPlugin.Callback("AdClicked");
+        ApplovinPlugin.getInstance().Callback("AdClicked");
     }
 
     @Override
     public void adDisplayed(AppLovinAd ad) {
-        ApplovinPlugin.Callback("AdDisplayed");
+        ApplovinPlugin.getInstance().Callback("AdDisplayed");
     }
 
     @Override
     public void adHidden(AppLovinAd ad) {
-        ApplovinPlugin.Callback("AdHidden");
+        ApplovinPlugin.getInstance().Callback("AdHidden");
     }
 
     @Override
     public void videoPlaybackBegan(AppLovinAd ad) {
-        ApplovinPlugin.Callback("VideoPlaybackBegan");
+        ApplovinPlugin.getInstance().Callback("VideoPlaybackBegan");
     }
 
     @Override
     public void videoPlaybackEnded(AppLovinAd ad, double percentViewed, boolean fullyWatched) {
-        ApplovinPlugin.Callback("VideoPlaybackEnded");
+        ApplovinPlugin.getInstance().Callback("VideoPlaybackEnded");
     }
 }
