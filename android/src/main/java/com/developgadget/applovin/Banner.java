@@ -1,68 +1,123 @@
 package com.developgadget.applovin;
-import android.app.Activity;
+
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import androidx.core.view.ViewCompat;
+import android.widget.RelativeLayout;
+
 import com.applovin.adview.AppLovinAdView;
 import com.applovin.adview.AppLovinAdViewDisplayErrorCode;
 import com.applovin.adview.AppLovinAdViewEventListener;
 import com.applovin.sdk.AppLovinAd;
+import com.applovin.sdk.AppLovinAdClickListener;
 import com.applovin.sdk.AppLovinAdDisplayListener;
 import com.applovin.sdk.AppLovinAdLoadListener;
 import com.applovin.sdk.AppLovinAdSize;
 import com.applovin.sdk.AppLovinSdkUtils;
-
 import java.util.HashMap;
-
-import io.flutter.plugin.common.BinaryMessenger;
-import io.flutter.plugin.common.MethodChannel;
+import io.flutter.Log;
 import io.flutter.plugin.platform.PlatformView;
 
-public class Banner implements AppLovinAdDisplayListener, AppLovinAdLoadListener, AppLovinAdViewEventListener {
+public class Banner implements PlatformView, AppLovinAdClickListener, AppLovinAdDisplayListener,
+        AppLovinAdViewEventListener, AppLovinAdLoadListener {
+
+    final AppLovinAdView Banner;
+    final HashMap<String, AppLovinAdSize> sizes = new HashMap<String, AppLovinAdSize>() {
+        {
+            put("BANNER", AppLovinAdSize.BANNER);
+            put("MREC", AppLovinAdSize.MREC);
+            put("LEADER", AppLovinAdSize.LEADER);
+        }
+    };
+
+    AppLovinAdSize size;
+
+    public Banner(Context context, HashMap args) {
+        try {
+            this.size = this.sizes.get(args.get("Size"));
+        } catch (Exception e) {
+            this.size = AppLovinAdSize.BANNER;
+        }
+        this.Banner = new AppLovinAdView(this.size, context);
+        final FrameLayout.LayoutParams layout = new FrameLayout.LayoutParams(
+                this.dpToPx(context, this.size.getWidth()), this.dpToPx(context, this.size.getHeight()));
+        layout.gravity = Gravity.CENTER;
+        this.Banner.setLayoutParams(layout);
+        this.Listeners();
+        this.Banner.loadNextAd();
+    }
+
+    public void Listeners() {
+        if (this.Banner != null) {
+            this.Banner.setAdViewEventListener(this);
+            this.Banner.setAdLoadListener(this);
+            this.Banner.setAdDisplayListener(this);
+            this.Banner.setAdClickListener(this);
+        }
+    }
+
+    int dpToPx(Context context, int dp) {
+        return AppLovinSdkUtils.dpToPx(context, dp);
+    }
+
+    @Override
+    public View getView() {
+        return this.Banner;
+    }
+
+    @Override
+    public void dispose() {
+        this.Banner.destroy();
+    }
 
     @Override
     public void adOpenedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
-        ApplovinPlugin.Callback("AdOpenedFullscreen");
+        ApplovinPlugin.getInstance().Callback("AdOpenedFullscreen");
     }
 
     @Override
     public void adClosedFullscreen(AppLovinAd ad, AppLovinAdView adView) {
-        //this.adView.loadNextAd();
-        ApplovinPlugin.Callback("AdClosedFullscreen");
+        ApplovinPlugin.getInstance().Callback("AdClosedFullscreen");
     }
 
     @Override
     public void adLeftApplication(AppLovinAd ad, AppLovinAdView adView) {
-        ApplovinPlugin.Callback("AdLeftApplication");
+        ApplovinPlugin.getInstance().Callback("AdLeftApplication");
     }
 
     @Override
     public void adFailedToDisplay(AppLovinAd ad, AppLovinAdView adView, AppLovinAdViewDisplayErrorCode code) {
-        //this.adView.loadNextAd();
-        ApplovinPlugin.Callback("AdFailedToDisplay error sdk code " + code.ordinal());
+        this.Banner.loadNextAd();
+        ApplovinPlugin.getInstance().Callback("AdFailedToDisplay");
+    }
+
+    @Override
+    public void adClicked(AppLovinAd ad) {
+        ApplovinPlugin.getInstance().Callback("AdClicked");
     }
 
     @Override
     public void adDisplayed(AppLovinAd ad) {
-        ApplovinPlugin.Callback("AdDisplayed");
+        ApplovinPlugin.getInstance().Callback("AdDisplayed");
     }
 
     @Override
     public void adHidden(AppLovinAd ad) {
-        //this.adView.loadNextAd();
-        ApplovinPlugin.Callback("AdHidden");
+        this.Banner.loadNextAd();
+        ApplovinPlugin.getInstance().Callback("AdHidden");
     }
 
     @Override
     public void adReceived(AppLovinAd ad) {
-        ApplovinPlugin.Callback("AdReceived");
+        ApplovinPlugin.getInstance().Callback("AdReceived");
     }
 
     @Override
     public void failedToReceiveAd(int errorCode) {
-        //this.adView.loadNextAd();
-        ApplovinPlugin.Callback("FailedToReceiveAd error code " + errorCode);
+        this.Banner.loadNextAd();
+        Log.e("AppLovin", "FailedToReceiveAd error sdk code " + errorCode);
+        ApplovinPlugin.getInstance().Callback("FailedToReceiveAd");
     }
 }

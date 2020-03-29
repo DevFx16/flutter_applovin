@@ -2,14 +2,13 @@ package com.developgadget.applovin;
 
 import android.app.Activity;
 import android.content.Context;
-
 import androidx.annotation.NonNull;
-
 import com.applovin.sdk.AppLovinPrivacySettings;
 import com.applovin.sdk.AppLovinSdk;
-
 import io.flutter.Log;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -17,13 +16,15 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import io.flutter.plugin.common.StandardMethodCodec;
+import io.flutter.plugin.platform.PlatformViewRegistry;
 
-public class ApplovinPlugin implements FlutterPlugin, MethodCallHandler {
+public class ApplovinPlugin implements FlutterPlugin, MethodCallHandler, ActivityAware {
     private static ApplovinPlugin instance;
     private static Interstitial instanceInter;
     private static RewardedVideo instanceReward;
     private static Context context;
     private static MethodChannel channel;
+    public static Activity activity;
 
     public static ApplovinPlugin getInstance() {
         return instance;
@@ -31,36 +32,35 @@ public class ApplovinPlugin implements FlutterPlugin, MethodCallHandler {
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+        this.RegistrarBanner(flutterPluginBinding.getFlutterEngine().getPlatformViewsController().getRegistry());
         this.onAttachedToEngine(flutterPluginBinding.getApplicationContext(), flutterPluginBinding.getBinaryMessenger());
     }
 
     public static void registerWith(Registrar registrar) {
         if (instance == null) {
-            instance = new ApplovinPlugin(registrar.activeContext());
+            instance = new ApplovinPlugin();
         }
+        instance.RegistrarBanner(registrar.platformViewRegistry());
         instance.onAttachedToEngine(registrar.context(), registrar.messenger());
+    }
+
+    public void RegistrarBanner(PlatformViewRegistry registry){
+        registry.registerViewFactory("/Banner", new BannerFactory());
     }
 
     public void onAttachedToEngine(Context applicationContext, BinaryMessenger messenger) {
         if (channel != null) {
             return;
         }
-        instance = new ApplovinPlugin(applicationContext);
+        instance = new ApplovinPlugin();
         Log.i("AppLovin Plugin", "onAttachedToEngine");
         this.context = applicationContext;
         channel = new MethodChannel(messenger, "AppLovin", StandardMethodCodec.INSTANCE);
         channel.setMethodCallHandler(this);
     }
 
-    public ApplovinPlugin(Context context){
-        if(this.instanceInter == null){
-            instance.instanceInter = new Interstitial(context);
-            instance.instanceReward = new RewardedVideo(context);
-            Log.i("AppLovin Plugin", "Instances created");
-        }
+    public ApplovinPlugin() {
     }
-
-    public ApplovinPlugin(){}
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
@@ -96,21 +96,21 @@ public class ApplovinPlugin implements FlutterPlugin, MethodCallHandler {
                     result.notImplemented();
             }
         } catch (Exception err) {
-            Log.i("Method error", err.toString());
+            Log.e("Method error", err.toString());
             result.notImplemented();
         }
     }
 
     static public void Callback(final String method) {
-        if (instance.context != null && instance.channel != null) {
-            new Thread(new Runnable() {
+        if (instance.context != null && instance.channel != null && instance.activity != null) {
+            instance.activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     instance.channel.invokeMethod(method, null);
                 }
-            }).start();
-        }else{
-            Log.i("AppLovin", "instance method channel not created");
+            });
+        } else {
+            Log.e("AppLovin", "instance method channel not created");
         }
     }
 
@@ -120,4 +120,26 @@ public class ApplovinPlugin implements FlutterPlugin, MethodCallHandler {
         this.channel.setMethodCallHandler(null);
         this.channel = null;
     }
+
+    @Override
+    public void onAttachedToActivity(ActivityPluginBinding binding) {
+        this.activity = binding.getActivity();
+        if (instance.instanceInter == null) {
+            instance.instanceInter = new Interstitial(binding.getActivity().getApplicationContext());
+            instance.instanceReward = new RewardedVideo();
+            Log.i("AppLovin Plugin", "Instances created");
+        }
+    }
+
+    @Override
+    public void onDetachedFromActivityForConfigChanges() {
+    }
+
+    @Override
+    public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
+        this.activity = binding.getActivity();
+    }
+
+    @Override
+    public void onDetachedFromActivity() { }
 }

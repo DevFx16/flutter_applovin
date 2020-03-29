@@ -1,3 +1,8 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Init project Interstitial and Reward 
+
+## 1.0.0
+
+Implement Banners Leaders and MRec
+

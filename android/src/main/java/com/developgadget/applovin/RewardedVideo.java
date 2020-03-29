@@ -1,7 +1,5 @@
 package com.developgadget.applovin;
 
-import android.content.Context;
-
 import com.applovin.adview.AppLovinIncentivizedInterstitial;
 import com.applovin.sdk.AppLovinAd;
 import com.applovin.sdk.AppLovinAdClickListener;
@@ -9,34 +7,44 @@ import com.applovin.sdk.AppLovinAdDisplayListener;
 import com.applovin.sdk.AppLovinAdLoadListener;
 import com.applovin.sdk.AppLovinAdRewardListener;
 import com.applovin.sdk.AppLovinAdVideoPlaybackListener;
+
 import java.util.Map;
+
 import io.flutter.Log;
 
-@SuppressWarnings("NullableProblems")
-public class RewardedVideo implements AppLovinAdRewardListener,
-        AppLovinAdLoadListener, AppLovinAdVideoPlaybackListener, AppLovinAdDisplayListener, AppLovinAdClickListener {
+public class RewardedVideo implements AppLovinAdLoadListener, AppLovinAdRewardListener,
+        AppLovinAdVideoPlaybackListener, AppLovinAdDisplayListener, AppLovinAdClickListener {
 
-    private AppLovinIncentivizedInterstitial Rewarded;
-    private final Context context;
+    private AppLovinIncentivizedInterstitial RewardedAd;
 
-    RewardedVideo(Context context) {
-        this.context = context;
-        this.Rewarded = AppLovinIncentivizedInterstitial.create(context);
-    }
-
-
-    public void Request() {
-        if (this.Rewarded != null && this.context != null)
-            this.Rewarded.preload(this);
-        else
-            Log.i("AppLovin", "Applovin request not instance");
+    public RewardedVideo() {
+        if (ApplovinPlugin.getInstance().activity != null)
+            this.RewardedAd = AppLovinIncentivizedInterstitial.create(ApplovinPlugin.getInstance().activity);
     }
 
     public void Show() {
-        if (this.Rewarded != null && this.Rewarded.isAdReadyToDisplay())
-            this.Rewarded.show(this.context, this, this, this);
-        else
-            Log.i("AppLovin", "Ad not load");
+        try {
+            if (this.RewardedAd != null && this.RewardedAd.isAdReadyToDisplay() && ApplovinPlugin.getInstance().activity != null)
+                this.RewardedAd.show(ApplovinPlugin.getInstance().activity, this, this,
+                        this, this);
+        } catch (Exception e) {
+            Log.e("AppLovin", e.toString());
+        }
+    }
+
+    public void Request() {
+        this.RewardedAd.preload(this);
+    }
+
+    @Override
+    public void adReceived(AppLovinAd ad) {
+        ApplovinPlugin.getInstance().Callback("AdReceived");
+    }
+
+    @Override
+    public void failedToReceiveAd(int errorCode) {
+        Log.e("AppLovin", "FailedToReceiveAd sdk error " + errorCode);
+        ApplovinPlugin.getInstance().Callback("FailedToReceiveAd");
     }
 
     @Override
@@ -56,7 +64,7 @@ public class RewardedVideo implements AppLovinAdRewardListener,
 
     @Override
     public void validationRequestFailed(AppLovinAd ad, int errorCode) {
-        Log.i("AppLovin", "ValidationRequestFailed error sdk code " + errorCode);
+        Log.e("AppLovin", "ValidationRequestFailed sdk error " + errorCode);
         ApplovinPlugin.getInstance().Callback("ValidationRequestFailed");
     }
 
@@ -66,14 +74,13 @@ public class RewardedVideo implements AppLovinAdRewardListener,
     }
 
     @Override
-    public void adReceived(AppLovinAd ad) {
-        ApplovinPlugin.getInstance().Callback("AdReceived");
+    public void videoPlaybackBegan(AppLovinAd ad) {
+        ApplovinPlugin.getInstance().Callback("VideoPlaybackBegan");
     }
 
     @Override
-    public void failedToReceiveAd(int errorCode) {
-        Log.i("AppLovin","FailedToReceiveAd error sdk code " + errorCode);
-        ApplovinPlugin.getInstance().Callback("FailedToReceiveAd");
+    public void videoPlaybackEnded(AppLovinAd ad, double percentViewed, boolean fullyWatched) {
+        ApplovinPlugin.getInstance().Callback("VideoPlaybackEnded");
     }
 
     @Override
@@ -89,15 +96,5 @@ public class RewardedVideo implements AppLovinAdRewardListener,
     @Override
     public void adHidden(AppLovinAd ad) {
         ApplovinPlugin.getInstance().Callback("AdHidden");
-    }
-
-    @Override
-    public void videoPlaybackBegan(AppLovinAd ad) {
-        ApplovinPlugin.getInstance().Callback("VideoPlaybackBegan");
-    }
-
-    @Override
-    public void videoPlaybackEnded(AppLovinAd ad, double percentViewed, boolean fullyWatched) {
-        ApplovinPlugin.getInstance().Callback("VideoPlaybackEnded");
     }
 }

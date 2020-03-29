@@ -1,16 +1,59 @@
-# applovin_example
+```dart
+import 'package:flutter/material.dart';
+import 'package:applovin/applovin.dart';
+import 'package:applovin/banner.dart';
 
-Demonstrates how to use the applovin plugin.
+void main() => runApp(MyApp());
 
-## Getting Started
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
-This project is a starting point for a Flutter application.
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    AppLovin.init();
+    super.initState();
+  }
 
-A few resources to get you started if this is your first Flutter project:
+  listener(AppLovinAdListener event, bool isInter) {
+    print(event);
+    if (event == AppLovinAdListener.adReceived) {
+      AppLovin.showInterstitial(interstitial: isInter);
+    }
+  }
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Plugin example app'),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton(
+              onPressed: () => AppLovin.requestInterstitial(
+                  (AppLovinAdListener event) => listener(event, true),
+                  interstitial: true),
+              child: Text('Show Interstitial'),
+            ),
+            RaisedButton(
+              onPressed: () => AppLovin.requestInterstitial(
+                  (AppLovinAdListener event) => listener(event, false),
+                  interstitial: true),
+              child: Text('Show Interstitial Reward'),
+            ),
+            BannerView((AppLovinAdListener event) => print(event), BannerAdSize.banner),
+            BannerView((AppLovinAdListener event) => print(event), BannerAdSize.mrec),
+            BannerView((AppLovinAdListener event) => print(event), BannerAdSize.leader),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```

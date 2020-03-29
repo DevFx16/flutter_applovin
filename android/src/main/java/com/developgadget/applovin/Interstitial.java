@@ -1,4 +1,5 @@
 package com.developgadget.applovin;
+
 import android.content.Context;
 import com.applovin.adview.AppLovinInterstitialAd;
 import com.applovin.adview.AppLovinInterstitialAdDialog;
@@ -9,6 +10,7 @@ import com.applovin.sdk.AppLovinAdLoadListener;
 import com.applovin.sdk.AppLovinAdSize;
 import com.applovin.sdk.AppLovinAdVideoPlaybackListener;
 import com.applovin.sdk.AppLovinSdk;
+
 import io.flutter.Log;
 
 @SuppressWarnings("ALL")
@@ -21,20 +23,29 @@ public class Interstitial implements AppLovinAdLoadListener,
 
     Interstitial(Context context) {
         this.context = context;
-        this.interstitialAd = AppLovinInterstitialAd.create(AppLovinSdk.getInstance(context), context);
+        this.init();
     }
 
+    public void init() {
+        this.interstitialAd = AppLovinInterstitialAd.create(AppLovinSdk.getInstance(context), context);
+        this.interstitialAd.setAdClickListener(this);
+        this.interstitialAd.setAdDisplayListener(this);
+        this.interstitialAd.setAdVideoPlaybackListener(this);
+    }
 
     public void Request() {
-        if (this.interstitialAd != null && this.context != null && this.currentAd == null)
-            AppLovinSdk.getInstance(this.context).getAdService().loadNextAd(AppLovinAdSize.INTERSTITIAL, this);
+        AppLovinSdk.getInstance(this.context).getAdService().loadNextAd(AppLovinAdSize.INTERSTITIAL, this);
     }
 
     public void Show() {
-        if (this.currentAd != null)
-            this.interstitialAd.showAndRender(this.currentAd);
-        else
-            Log.i("AppLovin", "Ad not load instance null");
+        try {
+            if (this.currentAd != null)
+                this.interstitialAd.showAndRender(this.currentAd);
+            else
+                Log.e("AppLovin", "Ad not load instance null");
+        } catch (Exception e) {
+            Log.e("AppLovin", "Ad not load instance null");
+        }
     }
 
     @Override
@@ -45,7 +56,7 @@ public class Interstitial implements AppLovinAdLoadListener,
 
     @Override
     public void failedToReceiveAd(int errorCode) {
-        Log.i("AppLovin", "FailedToReceiveAd error sdk code "+ errorCode);
+        Log.e("AppLovin", "FailedToReceiveAd error sdk code " + errorCode);
         ApplovinPlugin.getInstance().Callback("FailedToReceiveAd");
     }
 

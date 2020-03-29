@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:applovin/applovin.dart';
+import 'package:applovin/banner.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,18 +10,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
   @override
   void initState() {
     AppLovin.init();
     super.initState();
   }
 
-  listener(AppLovinAdListener event, bool isInter){
-    if(event == AppLovinAdListener.adReceived){
+  listener(AppLovinAdListener event, bool isInter) {
+    print(event);
+    if (event == AppLovinAdListener.adReceived) {
       AppLovin.showInterstitial(interstitial: isInter);
     }
-
   }
 
   @override
@@ -34,8 +34,21 @@ class _MyAppState extends State<MyApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(onPressed: () => AppLovin.requestInterstitial((AppLovinAdListener event) => listener(event, true), interstitial: true), child: Text('Show Interstitial'),),
-            RaisedButton(onPressed: () => AppLovin.requestInterstitial((AppLovinAdListener event) => listener(event, false), interstitial: true), child: Text('Show Interstitial Reward'),),
+            RaisedButton(
+              onPressed: () => AppLovin.requestInterstitial(
+                  (AppLovinAdListener event) => listener(event, true),
+                  interstitial: true),
+              child: Text('Show Interstitial'),
+            ),
+            RaisedButton(
+              onPressed: () => AppLovin.requestInterstitial(
+                  (AppLovinAdListener event) => listener(event, false),
+                  interstitial: true),
+              child: Text('Show Interstitial Reward'),
+            ),
+            BannerView((AppLovinAdListener event) => print(event), BannerAdSize.banner),
+            BannerView((AppLovinAdListener event) => print(event), BannerAdSize.mrec),
+            BannerView((AppLovinAdListener event) => print(event), BannerAdSize.leader),
           ],
         ),
       ),

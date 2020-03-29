@@ -50,7 +50,7 @@ class AppLovin {
       {bool interstitial = true}) async {
     try {
       _channel.setMethodCallHandler(
-          (MethodCall call) async => _handleMethod(call, listener));
+          (MethodCall call) async => handleMethod(call, listener));
       await _channel
           .invokeMethod('RequestInterstitial', {'IsInter': interstitial});
     } catch (e) {
@@ -75,7 +75,7 @@ class AppLovin {
     }
   }
 
-  static Future<void> _handleMethod(
+  static Future<void> handleMethod(
       MethodCall call, AppLovinListener listener) async {
     listener(appLovinAdListener[call.method]);
   }
